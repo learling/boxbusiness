@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="
+{% static 'css/style.css' %}
+">
+    <link rel="shortcut icon" href="
+{% static 'favicon.ico' %}
+">
+    <title>{% block title %}BoxBusiness{% endblock %}</title>
+</head>
+<body>
+    {% block content %}replace me{% endblock %}
+    {% include 'footer.html' %}
+</body>
+</html>
