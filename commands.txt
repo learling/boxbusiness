@@ -1,5 +1,4 @@
-mkdir -p projects/web/django
-cd projects/web/django/
+mkdir -p projects/web/django && cd projects/web/django/
 echo
 echo "Make sure Python 3 is installed:"
 which python3
@@ -10,8 +9,7 @@ pip3 freeze > requirements.txt
 echo
 echo "To install the exact same versions later, run:"
 echo "pip3 install -r requirements.txt"
-mkdir src
-cd src
+mkdir src && cd src
 django-admin startproject boxbusiness .
 python3 manage.py migrate
 echo
@@ -60,8 +58,7 @@ echo "# " >> __init__.py
 echo "# python3 manage.py migrate" >> __init__.py
 echo "# python3 manage.py inspectdb > models.py" >> __init__.py
 cd ..
-mkdir templates
-cd templates
+mkdir templates && cd templates
 echo '<!DOCTYPE html>' > base.html
 echo '<html>' >> base.html
 echo '<head>' >> base.html
@@ -123,4 +120,4 @@ echo 'git branch -M main' >> README.md
 echo 'git remote add origin git@github.com:learling/boxbusiness.git' >> README.md
 echo 'git push -u origin main' >> README.md
 echo '```" >> README.md'
-history | cut -c 8- | tail -n 126 > commands.txt
+history | cut -c 8- | tail -n 123 > commands.txt
