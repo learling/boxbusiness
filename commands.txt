@@ -101,7 +101,7 @@ echo -e '    finally:' >> functional_tests.py
 echo -e '        browser.quit()\n' >> functional_tests.py
 echo -e "assert_success(webdriver.Firefox())\n" >> functional_tests.py
 echo -e "assert_success(webdriver.Chrome())\n" >> functional_tests.py
-echo "https://www.obeythetestinggoat.com/book/pre-requisite-installations.html" >> functional_tests.py
+echo "# https://www.obeythetestinggoat.com/book/pre-requisite-installations.html" >> functional_tests.py
 echo "# Download and copy geckodriver to /usr/local/bin" >> functional_tests.py
 echo "# python3 manage.py runserver" >> functional_tests.py
 echo "# In another shell, run the automatic tests:" >> functional_tests.py

@@ -11,7 +11,7 @@ assert_success(webdriver.Firefox())
 
 assert_success(webdriver.Chrome())
 
-https://www.obeythetestinggoat.com/book/pre-requisite-installations.html
+# https://www.obeythetestinggoat.com/book/pre-requisite-installations.html
 # Download and copy geckodriver to /usr/local/bin
 # python3 manage.py runserver
 # In another shell, run the automatic tests:
