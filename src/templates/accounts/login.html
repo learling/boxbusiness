@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+	<h3 id="form-title">LOGIN</h3>
+	<div class="d-flex justify-content-center form_container">
+		<form method="POST" action="">
+			{% csrf_token %}
+			<input type="text" name="username" placeholder="Username">
+			<input type="password" name="password" placeholder="Password">
+ 			<input type="submit" value="Login">
+		</form>
+	</div>
+	{% for message in messages %}
+		<p>{{message}}</p>
+	{% endfor %}			
+	<p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+{% endblock %}

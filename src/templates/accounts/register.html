@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+	<h3 id="form-title">REGISTER ACCOUNT</h3>
+	<div class="d-flex justify-content-center form_container">
+		<form method="POST" action="">
+			{% csrf_token %}
+			{{form.username}}
+			{{form.email}}
+			{{form.password1}}
+			{{form.password2}}
+ 			<input type="submit" value="Login">
+		</form>
+	</div>
+	{{form.errors}}			
+	<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+	<script>
+		var form_fields = document.getElementsByTagName('input');
+		form_fields[1].placeholder='Username';
+		form_fields[2].placeholder='Email';
+		form_fields[3].placeholder='Enter password';
+		form_fields[4].placeholder='Re-enter password';
+	</script>
+{% endblock %}
