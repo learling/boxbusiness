@@ -4,9 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.conf import settings
 from .models import *
 from .forms import CreateUserForm
 from .decorators import unauthenticated_user, allowed_users
+
 
 @unauthenticated_user
 def register_user(request):
@@ -15,8 +17,8 @@ def register_user(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('username')
             user.groups.add(Group.objects.get(name='customer'))
+            username = form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
     context = {'form': form}
