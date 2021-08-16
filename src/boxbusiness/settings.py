@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import sys
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -86,6 +87,19 @@ DATABASES = {
         'HOST': env('DB_HOST'),
         'PORT': env('DB_PORT'),
         'PASSWORD': env('DB_PASSWORD'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_ALL_TABLES'"
+        }
+    }
+}
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('TEST_DB_NAME'),
+        'USER': env('TEST_DB_USER'),
+        'HOST': env('TEST_DB_HOST'),
+        'PORT': env('TEST_DB_PORT'),
+        'PASSWORD': env('TEST_DB_PASSWORD'),
         'TEST': {
             'MIRROR': 'default',
         },
@@ -93,8 +107,12 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_ALL_TABLES'"
         }
     }
-}
 
+TEST_USER = {
+    'name': 'testingGoat',
+    'email': 'goat@test.ing',
+    'passw': '0b3ythe.TDL'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
