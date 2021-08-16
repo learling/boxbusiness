@@ -12,7 +12,10 @@
     <title>{% block title %}BoxBusiness{% endblock %}</title>
 </head>
 <body>
-    {% block content %}replace me{% endblock %}
+    {% include 'nav.html' %}
+    <main>
+        {% block content %}replace me{% endblock %}
+    </main>
     {% include 'footer.html' %}
 </body>
 </html>

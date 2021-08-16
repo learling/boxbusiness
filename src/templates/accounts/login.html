@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-	<h3>LOGIN</h3>
-	<form method="POST" action="">
-		{% csrf_token %}
-		<input type="text" name="username" placeholder="Username">
-		<input type="password" name="password" placeholder="Password">
-		<input type="submit" value="Login">
-	</form>
-	{% for message in messages %}
-		<p>{{message}}</p>
-	{% endfor %}			
-	<p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+	<div class="ćenter-wrapper">
+		<h3>LOGIN</h3>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<div class="p-2">
+				<input type="text" name="username" placeholder="Username">
+			</div>
+			<div class="p-2">
+				<input type="password" name="password" placeholder="Password">
+			</div>
+			<div class="p-2">
+				<input type="submit" value="Login">
+			</div>
+		</form>
+		{% for message in messages %}
+			<p>{{message}}</p>
+		{% endfor %}			
+		<p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+	</div>
 {% endblock %}

@@ -40,6 +40,7 @@ class TestAuthentication(FunctionalTests):
     def test_login_valid_user(self):
         self.register_valid_user()
         self.wait_for_body_contains(LOGIN_PATTERN)
+        self.wait_for_body_contains('[aA]ccount was created')
         self.browser.find_element_by_name('username').send_keys(self.u['name'])
         self.browser.find_element_by_name('password').send_keys(self.u['passw'])
         submit = "//input[@type='submit' and @value='Login']"
@@ -67,3 +68,13 @@ class TestAuthentication(FunctionalTests):
         self.register_valid_user()
         self.wait_for_body_contains(REGISTER_PATTERN)
         self.errorlist_contains('[uU]sername (already)? exists')
+
+    def test_layout(self):
+        self.browser.get(self.live_server_url + reverse('login'))
+        self.browser.set_window_size(1024, 768)
+        inputbox = self.browser.find_element_by_name('username')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )

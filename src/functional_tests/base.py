@@ -27,7 +27,7 @@ class FunctionalTests(StaticLiveServerTestCase):
 
     def delete_test_user(self):
         try:
-            u = User.objects.get(username = self.u['name'])
+            u = User.objects.get(username=self.u['name'])
             u.delete()
         except User.DoesNotExist:
             pass
