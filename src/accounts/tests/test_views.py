@@ -50,17 +50,22 @@ class TestViews(TestCase):
         self.assertEquals(user.groups.all()[0], group)
         self.assertRedirects(response, self.login_path)
 
+    # TODO
     def test_register_POST_invalid(self):
         pass
 
+    # TODO
     def test_register_POST_empty(self):
         pass
 
+    # TODO
     def test_login_POST_valid(self):
         pass
 
+    # TODO
     def test_login_POST_invalid(self):
         pass
 
+    # TODO
     def test_login_POST_empty(self):
         pass
