@@ -56,7 +56,7 @@ class TestAuthentication(FunctionalTests):
         self.login_invalid_user('wrong' + self.u['name'], 'wrong' + self.u['passw'])
 
     def test_register_mismatch_password_error(self):
-        self.wait_for_open_page('register', 'Register')
+        self.wait_for_open_page('register', REGISTER_PATTERN)
         self.register_user(self.u['name'], self.u['email'], self.u['passw'], self.u['passw'] + '2')
         self.wait_for_body_contains(REGISTER_PATTERN)
         self.errorlist_contains('[pP]assword fields didn.t match')
