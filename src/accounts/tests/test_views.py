@@ -6,66 +6,127 @@ from django.conf import settings
 class TestViews(TestCase):
 
     def login_test_user(self):
-        self.client.login(username='test-user', password='test-pass')
+        user = User.objects.create(username=self.u['name'])
+        user.set_password(self.u['passw'])
+        user.save()
+        self.client.login(username=self.u['name'], password=self.u['passw'])
 
-    def setUp(self):
-        self.u = settings.TEST_USER
-        self.client = Client()
-        self.login_path = reverse('login')
-        self.login_response = self.client.get(self.login_path)
-        self.profile_path = reverse('profile')
-        self.logout_path = reverse('logout')
-
-    def test_register_GET(self):
-        response = self.client.get(reverse('register'))
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/register.html')
-
-    def test_login_GET(self):
-        self.login_test_user()
-        self.assertEquals(self.login_response.status_code, 200)
-        self.assertTemplateUsed(self.login_response, 'accounts/login.html')
-
-    def test_logout_GET(self):
-        self.login_test_user()
-        response = self.client.get(self.logout_path)
-        self.assertRedirects(response, self.login_path)
-
-    def test_profile_GET(self):
-        response = self.client.get(self.profile_path)
-        expected_redirect = f'{self.login_path}?next={self.profile_path}'
-        self.assertRedirects(response, expected_redirect)
-
-    def test_register_POST_valid(self):
-        response = self.client.post(reverse('register'), {
+    def create_test_user(self):
+        return self.client.post(reverse('register'), {
             'username': self.u['name'],
             'email': self.u['email'],
             'password1': self.u['passw'],
             'password2': self.u['passw']
         })
-        user = User.objects.last();
+
+    def assert_no_creation(self, response):
+        u = User.objects.filter(username=self.u['name']).all()
+        self.assertLessEqual(len(u), 1)
+        self.assertTemplateUsed(response, 'accounts/register.html')
+
+    def setUp(self):
+        self.u = settings.TEST_USER
+        self.client = Client()
+        self.login_response = self.client.get(reverse('login'))
+
+    def tearDown(self):
+        try:
+            u = User.objects.get(username=self.u['name'])
+            u.delete()
+        except User.DoesNotExist:
+            pass
+
+    def test_register_GET_anonymous(self):
+        response = self.client.get(reverse('register'))
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/register.html')
+
+    def test_register_GET_authenticated(self):
+        self.login_test_user()
+        response = self.client.get(reverse('register'))
+        self.assertRedirects(response, reverse('profile'))
+
+    def test_login_GET_anonymous(self):
+        self.assertEquals(self.login_response.status_code, 200)
+        self.assertTemplateUsed(self.login_response, 'accounts/login.html')
+
+    def test_login_GET_authenticated(self):
+        self.login_test_user()
+        response = self.client.get(reverse('login'))
+        self.assertRedirects(response, reverse('profile'))
+    
+    def test_logout_GET(self):
+        self.login_test_user()
+        response = self.client.get(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
+
+    def test_profile_GET_anonymous(self):
+        response = self.client.get(reverse('profile'))
+        expected_redirect = f'{reverse("login")}?next={reverse("profile")}'
+        self.assertRedirects(response, expected_redirect)
+
+    def test_profile_GET_authenticated(self):
+        self.login_test_user()
+        response = self.client.get(reverse('profile'))
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/profile.html')
+
+    def test_register_POST_valid(self):
+        response = self.create_test_user()
+        user = User.objects.last()
         self.assertEquals(user.username, self.u['name'])
         group = Group.objects.get(name='customer')
         self.assertEquals(len(user.groups.all()), 1)
         self.assertEquals(user.groups.all()[0], group)
-        self.assertRedirects(response, self.login_path)
+        self.assertRedirects(response, reverse('login'))
 
-    # TODO
-    def test_register_POST_invalid(self):
-        pass
+    def test_register_POST_no_duplicate(self):
+        response = self.create_test_user()
+        response = self.create_test_user()
+        self.assert_no_creation(response)
 
-    # TODO
     def test_register_POST_empty(self):
-        pass
+        response = self.client.post(reverse('register'), {
+            'username': '',
+            'email': '',
+            'password1': '',
+            'password2': ''
+        })
+        self.assert_no_creation(response)
 
-    # TODO
+    def test_register_POST_none(self):
+        response = self.client.post(reverse('register'), {})
+        self.assert_no_creation(response)
+
+
     def test_login_POST_valid(self):
-        pass
+        self.create_test_user()
+        response = self.client.post(reverse('register'), {
+            'username': self.u['name'],
+            'password': self.u['passw']
+        })
+        self.assertTrue(
+            User.objects.get(username=self.u['name']).is_authenticated
+        )
 
-    # TODO
-    def test_login_POST_invalid(self):
-        pass
+    def test_login_POST_invalid_credentials(self):
+        response = self.client.post(reverse('register'), {
+            'username': 'badboy',
+            'password': 'wr0ngPa8w'
+        })
+        self.assertEquals(
+            len(User.objects.filter(username='badboy').all()), 0
+        )
+        self.assertEquals(response.status_code, 200)
 
-    # TODO
     def test_login_POST_empty(self):
-        pass
+        response = self.client.post(reverse('register'), {
+            'username': '',
+            'password': ''
+        })
+        self.assertEquals(response.status_code, 200)
+
+
+    def test_login_POST_none(self):
+        response = self.client.post(reverse('register'), {})
+        self.assertEquals(response.status_code, 200)
