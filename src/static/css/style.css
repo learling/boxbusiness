@@ -3,9 +3,12 @@
 :root {
 	--bb-green: #48a94d;
 	--bb-yellow: #ffca00;
+	--bb-red: #e23711;
 }
 
 body, main {
+	margin: 0;
+	padding: 0;
 	background-color: var(--bb-green);
 	ḿin-height: 100vh;
 }
@@ -25,19 +28,19 @@ a:hover {
     text-align: center;
     margin: auto;
 }
-.p-2, input {
-	padding: .2rem;
+.p-4, input {
+	padding: .4rem;
 }
 input {
 	border: none;
 	outline: none;
 	background-color: white;
-	border-bottom: .1rem solid var(--bb-yellow);
-	box-shadow: .01rem .01rem .01rem .01rem black;
+	border-left: .2rem solid var(--bb-yellow);
+	box-shadow: .04rem .04rem black;
 }
 input[type="submit"] {
 	cursor: pointer;
-	padding: .2rem 2rem .2rem 2rem;
+	padding: .4rem 2rem .4rem 2rem;
 	background-color: var(--bb-yellow);
 }
 footer {
@@ -45,4 +48,16 @@ footer {
 	top: 100vh;
 	text-align: center;
 	padding: .6rem;
+}
+.navbar {
+	margin: 0;
+	background-color: black;
+	color: white;
+	padding: .6rem;
+	margin-bottom: 1.8rem;
+}
+.danger {
+	background-color: white;
+	color: var(--bb-red);
+	padding: .4rem;
 }
