@@ -37,7 +37,7 @@ class TestAuthentication(FunctionalTests):
         self.wait_for_open_page('register', REGISTER_PATTERN)
         self.register_user(self.u['name'], self.u['email'], self.u['passw'], self.u['passw'])
 
-    def test_login_valid_user(self):
+    def test_login_valid_user_should_show_logout_link(self):
         self.register_valid_user()
         self.wait_for_body_contains(LOGIN_PATTERN)
         self.wait_for_body_contains('[aA]ccount was created')
@@ -47,29 +47,29 @@ class TestAuthentication(FunctionalTests):
         self.browser.find_element_by_xpath(submit).click()
         self.wait_for_body_contains('Log out')
 
-    def test_login_incorrect_username(self):
+    def test_login_incorrect_username_should_show_general_info(self):
         self.login_invalid_user(self.u['name'], 'wrong' + self.u['passw'])
 
-    def test_login_incorrect_password(self):
+    def test_login_incorrect_password_should_show_general_info(self):
         self.login_invalid_user('wrong' + self.u['name'], self.u['passw'])
 
-    def test_login_completely_wrong(self):
+    def test_login_completely_wrong_should_show_general_info(self):
         self.login_invalid_user('wrong' + self.u['name'], 'wrong' + self.u['passw'])
 
-    def test_register_mismatch_password_error(self):
+    def test_register_mismatch_should_show_password_error(self):
         self.wait_for_open_page('register', REGISTER_PATTERN)
         self.register_user(self.u['name'], self.u['email'], self.u['passw'], self.u['passw'] + '2')
         self.wait_for_body_contains(REGISTER_PATTERN)
-        self.errorlist_contains('[pP]assword fields didn.t match')
+        self.assert_errorlist_contains('[pP]assword fields didn.t match')
 
-    def test_register_existing_user_error(self):
+    def test_register_taken_username_should_show_exists_error(self):
         self.register_valid_user()
         self.wait_for_open_page('register', REGISTER_PATTERN)
         self.register_valid_user()
         self.wait_for_body_contains(REGISTER_PATTERN)
-        self.errorlist_contains('[uU]sername (already)? exists')
+        self.assert_errorlist_contains('[uU]sername (already)? exists')
 
-    def test_layout(self):
+    def test_position_login_input_should_be_centered(self):
         self.browser.get(self.live_server_url + reverse('login'))
         self.browser.set_window_size(1024, 768)
         inputbox = self.browser.find_element_by_name('username')

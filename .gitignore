@@ -7,3 +7,5 @@ db.sqlite3
 *.pot
 *.pyc
 .env
+htmlcov
+.coverage*

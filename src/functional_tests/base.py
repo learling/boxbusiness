@@ -51,7 +51,7 @@ class FunctionalTests(StaticLiveServerTestCase):
             expected_regex
         ))
 
-    def errorlist_contains(self, expected_regex):
+    def assert_errorlist_contains(self, expected_regex):
         self.assertRegex(
             self.browser.find_element_by_class_name('errorlist').text,
             expected_regex
