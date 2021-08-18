@@ -1,3 +1,11 @@
 <nav class="navbar">
-	<p class="danger">This website is not secure, please do not enter data.</p>
+	<a href="/" class="red">Unsecure toy site</a>
+	{% if request.user.is_authenticated %}
+		<span class="sep">|</span>
+		<a href="{% url 'logout' %}">Sign out</a>
+		{{ request.user }}
+	{% else %}
+		<span class="sep">|</span>
+		<a href="{% url 'login' %}">Sign in</a>
+	{% endif %}
 </nav>
