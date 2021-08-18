@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-16">
+	<h1>Impressum</h1>
+	<address>{{ address }}</address><br>
+	<a href="mailto:{{ email }}">{{ email }}</a><br>
+	<a href="tel:{{ phone }}">{{ phone }}</a><br>
+</div>
+{% endblock %}

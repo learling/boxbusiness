@@ -2,6 +2,8 @@
 	<a href="/" class="red">Unsecure toy site</a>
 	{% if request.user.is_authenticated %}
 		<span class="sep">|</span>
+		<a href="{% url 'profile' %}">Profile</a>
+		<span class="sep">|</span>
 		<a href="{% url 'logout' %}">Sign out</a>
 		{{ request.user }}
 	{% else %}

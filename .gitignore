@@ -3,7 +3,7 @@ lib/python3.8/site-packages
 __pycache__/
 pyvenv.cfg
 db.sqlite3
-migrations
+**/migrations/*
 *.log
 *.pot
 *.pyc

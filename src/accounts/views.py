@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.conf import settings
 from .models import *
 from .forms import CreateUserForm
 from .decorators import unauthenticated_user, allowed_users

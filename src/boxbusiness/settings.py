@@ -108,11 +108,6 @@ if 'test' in sys.argv:
         }
     }
 
-TEST_USER = {
-    'name': 'testingGoat',
-    'email': 'goat@test.ing',
-    'passw': '0b3ythe.TDL'
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -157,3 +152,18 @@ STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Own config
+
+TEST_USER = {
+    'name': 'testingGoat',
+    'email': 'goat@test.ing',
+    'passw': '0b3ythe.TDL'
+}
+
+SITE_OWNER = {
+    'address': env('ADDRESS'),
+    'email': env('EMAIL'),
+    'phone': env('PHONE')
+}
