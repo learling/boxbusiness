@@ -1,6 +1,7 @@
-{% extends 'base.html' %}{% block content %}
-<h1>Profile</h1>
-<p>{{ user }}</p>
-<a href="{% url 'logout' %}">Log out</a>
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="p-16">
+	<h1>Profile</h1>
+</div>
 {% endblock %}
-
