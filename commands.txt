@@ -1,123 +1,134 @@
-mkdir -p projects/web/django && cd projects/web/django/
-echo
-echo "Make sure Python 3 is installed:"
-which python3
-virtualenv .
-source bin/activate
-pip3 install django django-environ pymysql selenium
-pip3 freeze > requirements.txt
-echo
-echo "To install the exact same versions later, run:"
-echo "pip3 install -r requirements.txt"
-mkdir src && cd src
-django-admin startproject boxbusiness .
-python3 manage.py migrate
-echo
-python3 manage.py createsuperuser
-echo
-python3 manage.py startapp pages
-cd ..
-echo "bin/" > .gitignore
-echo "lib/python3.8/site-packages" >> .gitignore
-echo "__pycache__/" >> .gitignore
-echo "pyvenv.cfg" >> .gitignore
-echo "db.sqlite3" >> .gitignore
-echo "*.log" >> .gitignore
-echo "*.pot" >> .gitignore
-echo "*.pyc" >> .gitignore
-echo ".env" >> .gitignore
-cd src/boxbusiness/
-touch .env
-sed '/^SECRET_KEY/q' settings.py | tail -1 > .env
-sed -i -- 's/\ //g' .env
-sed -i -- 's/^\(from.*\)$/\1\nimport environ\nenv = environ.Env()\nenviron.Env.read_env()/g' settings.py
-sed -i -- "s/^SECRET_KEY\(.*\)$/SECRET_KEY = env('SECRET_KEY')/g" settings.py
-sed -i -- "s/'DIRS': \[\],/'DIRS': \[BASE_DIR \/ 'templates'\],/g" settings.py
-sed -i -- "s/^\(STATIC_URL = .*\)$/\1\nSTATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)/g" settings.py
-sed -i -- "s/^\(INSTALLED_APPS = .*\)$/\1\n    'pages',/g" settings.py
-sed -i -- "s/^\(from.*\)$/\1\nfrom pages\.views import home/g" urls.py
-sed -i -- "s/^\(urlpatterns = .*\)$/\1\n    path('', home, name='home'),/g" urls.py
-echo "import pymysql" > __init__.py
-echo "pymysql.install_as_MySQLdb()" >> __init__.py
-echo "" >> __init__.py
-echo "# settings.py:" >> __init__.py
-echo "# " >> __init__.py
-echo "# DATABASES = {" >> __init__.py
-echo "#     'default': {" >> __init__.py
-echo "#         'ENGINE': 'django.db.backends.mysql'," >> __init__.py
-echo "#         'NAME': env('DB_NAME')," >> __init__.py
-echo "#         'USER': env('DB_USER')," >> __init__.py
-echo "#         'HOST': env('DB_HOST')," >> __init__.py
-echo "#         'PORT': env('DB_PORT')," >> __init__.py
-echo "#         'PASSWORD': env('DB_PASSWORD')" >> __init__.py
-echo "#     }" >> __init__.py
-echo "# }" >> __init__.py
-echo "# " >> __init__.py
-echo "# terminal:" >> __init__.py
-echo "# " >> __init__.py
-echo "# python3 manage.py migrate" >> __init__.py
-echo "# python3 manage.py inspectdb > models.py" >> __init__.py
-cd ..
-mkdir templates && cd templates
-echo '<!DOCTYPE html>' > base.html
-echo '<html>' >> base.html
-echo '<head>' >> base.html
-echo '    <meta charset="UTF-8">' >> base.html
-echo '    {% load static %}' >> base.html
-echo '    <link rel="stylesheet" href="' >> base.html
-echo "{% static 'css/style.css' %}" >> base.html
-echo '">' >> base.html
-echo '    <link rel="shortcut icon" href="' >> base.html
-echo "{% static 'favicon.ico' %}" >> base.html
-echo '">' >> base.html
-echo '    <title>{% block title %}BoxBusiness{% endblock %}</title>' >> base.html
-echo '</head>' >> base.html
-echo '<body>' >> base.html
-echo '    {% block content %}replace me{% endblock %}' >> base.html
-echo "    {% include 'footer.html' %}" >> base.html
-echo '</body>' >> base.html
-echo '</html>' >> base.html
-echo "{% extends 'base.html' %}{% block content %}<h1>Hello {{ request.user }}</h1>{% endblock %}" > home.html
-echo "<footer>the footer</footer>" > footer.html
-cd ..
-mkdir -p static/js
-mkdir -p static/css
-cd static
-wget https://learndjango.com/static/images/tutorials/favicon/favicon.ico
-cd css
-echo "body {background-color: #48a94d;}" > style.css
-cd ../..
-echo "def home(request):" >> pages/views.py
-echo "    return render(request, 'home.html', {})" >> pages/views.py
-echo -e 'from selenium import webdriver\n' > functional_tests.py
-echo -e 'def assert_success(browser):' >> functional_tests.py
-echo -e '    try:' >> functional_tests.py
-echo -e "        browser.get('http://localhost:8000')" >> functional_tests.py
-echo -e "        assert 'BoxBusiness' in browser.title" >> functional_tests.py
-echo -e '    finally:' >> functional_tests.py
-echo -e '        browser.quit()\n' >> functional_tests.py
-echo -e "assert_success(webdriver.Firefox())\n" >> functional_tests.py
-echo -e "assert_success(webdriver.Chrome())\n" >> functional_tests.py
-echo "# https://www.obeythetestinggoat.com/book/pre-requisite-installations.html" >> functional_tests.py
-echo "# Download and copy geckodriver to /usr/local/bin" >> functional_tests.py
-echo "# python3 manage.py runserver" >> functional_tests.py
-echo "# In another shell, run the automatic tests:" >> functional_tests.py
-echo "# python3 functional_tests.py" >> functional_tests.py
-echo "# No news is good news!" >> functional_tests.py
-cd ..
-echo "# BoxBusiness" >> README.md
-echo "### Django SetUp" >> README.md
-echo "- Adapt and run the [commands](commands.txt)" >> README.md
-echo "- Run the [functional tests](src/functional_tests.py)" >> README.md
-echo "### MySQL Database" >> README.md
-echo 'Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusiness/__init__.py)' >> README.md
-echo "### VCS with GitHub" >> README.md
-echo '```console' >> README.md
-echo 'git init' >> README.md
-echo 'git add .' >> README.md
-echo 'git commit -m "Initial commit"' >> README.md
-echo 'git branch -M main' >> README.md
-echo 'git remote add origin git@github.com:learling/boxbusiness.git' >> README.md
-echo 'git push -u origin main' >> README.md
-echo '```" >> README.md'
-history | cut -c 8- | tail -n 123 > commands.txt
+c=1 && mkdir -p projects/web/django && cd projects/web/django/
+((++c)) && virtualenv .
+((++c)) && source bin/activate
+((++c)) && pip3 install django django-environ pymysql selenium coverage
+((++c)) && pip3 freeze > requirements.txt
+((++c)) && mkdir src && cd src
+((++c)) && django-admin startproject boxbusiness .
+((++c)) && python3 manage.py migrate
+((++c)) && ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('extraodinary_admin', 'extraodinary_admin@example.com', 'go_to_localhost:8000/admin/_and_change_this_password')"
+((++c)) && python3 manage.py startapp pages
+((++c)) && cd ..
+((++c)) && echo -e 'bin/\nlib/python3.8/site-packages' > .gitignore
+((++c)) && echo -e '__pycache__/\npyvenv.cfg\ndb.sqlite3' >> .gitignore
+((++c)) && echo -e '**/migrations/*\n*.log\n*.pot\n*.pyc\n.env' >> .gitignore
+((++c)) && echo -e 'htmlcov\n.coverage' >> .gitignore
+((++c)) && echo -e '[run]\nomit=' > .coveragerc
+((++c)) && echo -e '	*/lib/*\n	*/venv/*\n	*/tests/*' >> .coveragerc
+((++c)) && cd src/boxbusiness/
+((++c)) && touch .env
+((++c)) && sed '/^SECRET_KEY/q' settings.py | tail -1 > .env
+((++c)) && sed -i -- 's/\ //g' .env
+((++c)) && sed -i -- 's/^\(from.*\)$/\1\nimport sys\nimport environ\nenv = environ.Env()\nenviron.Env.read_env()/g' settings.py
+((++c)) && sed -i -- "s/^SECRET_KEY\(.*\)$/SECRET_KEY = env('SECRET_KEY')/g" settings.py
+((++c)) && sed -i -- "s/'DIRS': \[\],/'DIRS': \[BASE_DIR \/ 'templates'\],/g" settings.py
+((++c)) && sed -i -- "s/^\(STATIC_URL = .*\)$/\1\nSTATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)/g" settings.py
+((++c)) && sed -i -- "s/^\(INSTALLED_APPS = .*\)$/\1\n    'pages',/g" settings.py
+((++c)) && sed -i -- "s/^\(from.*\)$/\1\nfrom pages\.views import home/g" urls.py
+((++c)) && sed -i -- "s/^\(urlpatterns = .*\)$/\1\n    path('', home, name='home'),/g" urls.py
+((++c)) && echo "import pymysql" > __init__.py
+((++c)) && echo "pymysql.install_as_MySQLdb()" >> __init__.py
+((++c)) && echo "" >> __init__.py
+((++c)) && echo "'''" >> __init__.py
+((++c)) && echo "# settings.py:" >> __init__.py
+((++c)) && echo "DATABASES = {" >> __init__.py
+((++c)) && echo "    'default': {" >> __init__.py
+((++c)) && echo "        'ENGINE': 'django.db.backends.mysql'," >> __init__.py
+((++c)) && echo "        'NAME': env('DB_NAME')," >> __init__.py
+((++c)) && echo "        'USER': env('DB_USER')," >> __init__.py
+((++c)) && echo "        'HOST': env('DB_HOST')," >> __init__.py
+((++c)) && echo "        'PORT': env('DB_PORT')," >> __init__.py
+((++c)) && echo "        'PASSWORD': env('DB_PASSWORD')" >> __init__.py
+((++c)) && echo "    }" >> __init__.py
+((++c)) && echo "}" >> __init__.py
+((++c)) && echo "if 'test' in sys.argv:" >> __init__.py
+((++c)) && echo "    DATABASES['default'] = {" >> __init__.py
+((++c)) && echo "        'ENGINE': 'django.db.backends.mysql'," >> __init__.py
+((++c)) && echo "        'NAME': env('TEST_DB_NAME')," >> __init__.py
+((++c)) && echo "        'USER': env('TEST_DB_USER')," >> __init__.py
+((++c)) && echo "        'HOST': env('TEST_DB_HOST')," >> __init__.py
+((++c)) && echo "        'PORT': env('TEST_DB_PORT')," >> __init__.py
+((++c)) && echo "        'PASSWORD': env('TEST_DB_PASSWORD')," >> __init__.py
+((++c)) && echo "        'TEST': {" >> __init__.py
+((++c)) && echo "            'MIRROR': 'default'," >> __init__.py
+((++c)) && echo "        }," >> __init__.py
+((++c)) && echo "    }" >> __init__.py
+((++c)) && echo "" >> __init__.py
+((++c)) && echo "# terminal:" >> __init__.py
+((++c)) && echo "python3 manage.py migrate" >> __init__.py
+((++c)) && echo "python3 manage.py inspectdb > models.py" >> __init__.py
+((++c)) && echo "'''" >> __init__.py
+((++c)) && cd ..
+((++c)) && mkdir templates && cd templates
+((++c)) && echo '<!DOCTYPE html>' > base.html
+((++c)) && echo '<html>' >> base.html
+((++c)) && echo '<head>' >> base.html
+((++c)) && echo '    <meta charset="UTF-8">' >> base.html
+((++c)) && echo '    {% load static %}' >> base.html
+((++c)) && echo '    <link rel="stylesheet" href="' >> base.html
+((++c)) && echo "{% static 'css/style.css' %}" >> base.html
+((++c)) && echo '">' >> base.html
+((++c)) && echo '    <link rel="shortcut icon" href="' >> base.html
+((++c)) && echo "{% static 'favicon.ico' %}" >> base.html
+((++c)) && echo '">' >> base.html
+((++c)) && echo '    <title>{% block title %}BoxBusiness{% endblock %}</title>' >> base.html
+((++c)) && echo '</head>' >> base.html
+((++c)) && echo '<body>' >> base.html
+((++c)) && echo '    {% block content %}replace me{% endblock %}' >> base.html
+((++c)) && echo "    {% include 'footer.html' %}" >> base.html
+((++c)) && echo '</body>' >> base.html
+((++c)) && echo '</html>' >> base.html
+((++c)) && echo "{% extends 'base.html' %}{% block content %}<h1>Hello {{ request.user }}</h1>{% endblock %}" > home.html
+((++c)) && echo '<footer>Now <a href="/admin">login</a> and change the password (see commands.txt)</footer>' > footer.html
+((++c)) && cd ..
+((++c)) && mkdir -p static/js
+((++c)) && mkdir -p static/css
+((++c)) && cd static
+((++c)) && wget https://learndjango.com/static/images/tutorials/favicon/favicon.ico
+((++c)) && cd css
+((++c)) && echo "body {background-color: #48a94d;}" > style.css
+((++c)) && cd ../..
+((++c)) && echo "def home(request):" >> pages/views.py
+((++c)) && echo "    return render(request, 'home.html', {})" >> pages/views.py
+((++c)) && echo -e 'from selenium import webdriver\n' > functional_tests.py
+((++c)) && echo -e 'def assert_success(browser):' >> functional_tests.py
+((++c)) && echo -e '    try:' >> functional_tests.py
+((++c)) && echo -e "        browser.get('http://localhost:8000')" >> functional_tests.py
+((++c)) && echo -e "        assert 'BoxBusiness' in browser.title" >> functional_tests.py
+((++c)) && echo -e '    finally:' >> functional_tests.py
+((++c)) && echo -e '        browser.quit()\n' >> functional_tests.py
+((++c)) && echo -e "assert_success(webdriver.Firefox())\n" >> functional_tests.py
+((++c)) && echo -e "assert_success(webdriver.Chrome())\n" >> functional_tests.py
+((++c)) && echo "'''" >> functional_tests.py
+((++c)) && echo "# https://www.obeythetestinggoat.com/book/pre-requisite-installations.html" >> functional_tests.py
+((++c)) && echo "# Download and copy geckodriver to /usr/local/bin" >> functional_tests.py
+((++c)) && echo "python3 manage.py runserver" >> functional_tests.py
+((++c)) && echo "# In another shell, run the automatic tests (no news is good news!):" >> functional_tests.py
+((++c)) && echo "python3 functional_tests.py" >> functional_tests.py
+((++c)) && echo "'''" >> functional_tests.py
+((++c)) && cd ..
+((++c)) && echo "# BoxBusiness" >> README.md
+((++c)) && echo "### Django SetUp" >> README.md
+((++c)) && echo '- Make sure Python 3 is installed: ```which python3```' >> README.md
+((++c)) && echo '- To install the exact same package-versions, try:' >> README.md
+((++c)) && echo '```pip3 install -r requirements.txt```' >> README.md
+((++c)) && echo "- Read and adapt the Ubuntu [commands](commands.txt)" >> README.md
+((++c)) && echo "- Run the first [functional tests](src/functional_tests.py)" >> README.md
+((++c)) && echo "### MySQL-Database" >> README.md
+((++c)) && echo 'Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusiness/__init__.py)' >> README.md
+((++c)) && echo "### VCS with GitHub" >> README.md
+((++c)) && echo '```console' >> README.md
+((++c)) && echo 'git init' >> README.md
+((++c)) && echo 'git add .' >> README.md
+((++c)) && echo 'git commit -m "Initial commit"' >> README.md
+((++c)) && echo 'git branch -M main' >> README.md
+((++c)) && echo 'git remote add origin git@github.com:learling/boxbusiness.git' >> README.md
+((++c)) && echo 'git push -u origin main' >> README.md
+((++c)) && echo '```' >> README.md
+((++c)) && echo '### Test-coverage' >> README.md
+((++c)) && echo 'Edit ```.coveragerc``` and run:' >> README.md
+((++c)) && echo '```console' >> README.md
+((++c)) && echo 'coverage run manage.py test -v 2 && coverage report && coverage html' >> README.md
+((++c)) && echo '```' >> README.md
+((++c)) && echo 'Inspect: ```~/projects/web/django/src/htmlcov/index.html```' >> README.md
+((++c)) && history | cut -c 8- | tail -n $c > commands.txt && cd src/ && ./manage.py runserver
