@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -44,5 +44,13 @@ def logout_user(request):
 
 @login_required(login_url='login')
 def profile(request):
-    context = {'user': request.user}
+    context = {}
     return render(request, 'accounts/profile.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def users(request):
+    User = get_user_model()
+    users = User.objects.all()
+    context = {'users': users}
+    return render(request, 'accounts/users.html', context)

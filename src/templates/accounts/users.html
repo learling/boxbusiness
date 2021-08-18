@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<!-- https://material.io/components/data-tables/web#style-customization -->
+<div class="p-16">
+  <h1>Users</h1>
+    <table class="light-table p-16">
+      <tr>
+        <th class="p-4">User ID</th>
+        <th class="p-4">Username</th>
+        <th class="p-4">Email</th>
+        <th class="p-4">User since</th>
+      </tr>
+    	{% for user in users %}
+      <tr>
+        <th class="p-4">{{ user.id }}</th>
+        <td class="p-4">{{ user.username }}</td>
+        <td class="p-4">{{ user.email }}</td>
+        <td class="p-4">{{ user.date_joined|date:"M d, Y" }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+{% endblock %}
