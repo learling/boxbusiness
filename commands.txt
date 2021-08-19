@@ -1,5 +1,4 @@
-c=1 && mkdir -p projects/web/django && cd projects/web/django/
-((++c)) && virtualenv .
+c=1 && mkdir -p projects/web/django && cd projects/web/django/ && virtualenv .
 ((++c)) && source bin/activate
 ((++c)) && pip3 install django django-environ pymysql selenium coverage
 ((++c)) && pip3 freeze > requirements.txt
@@ -8,15 +7,20 @@ c=1 && mkdir -p projects/web/django && cd projects/web/django/
 ((++c)) && python3 manage.py migrate
 ((++c)) && ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('extraodinary_admin', 'extraodinary_admin@example.com', 'go_to_localhost:8000/admin/_and_change_this_password')"
 ((++c)) && python3 manage.py startapp pages
-((++c)) && cd ..
-((++c)) && echo -e 'bin/\nlib/python3.8/site-packages' > .gitignore
+((++c)) && cd .. && echo -e 'bin/\nlib/python3.8/site-packages' > .gitignore
 ((++c)) && echo -e '__pycache__/\npyvenv.cfg\ndb.sqlite3' >> .gitignore
 ((++c)) && echo -e '**/migrations/*\n*.log\n*.pot\n*.pyc\n.env' >> .gitignore
 ((++c)) && echo -e 'htmlcov\n.coverage' >> .gitignore
-((++c)) && echo -e '[run]\nomit=' > .coveragerc
-((++c)) && echo -e '	*/lib/*\n	*/venv/*\n	*/tests/*' >> .coveragerc
-((++c)) && cd src/boxbusiness/
-((++c)) && touch .env
+((++c)) && cd src && touch .coveragerc
+((++c)) && echo '[run]' >> .coveragerc
+((++c)) && echo 'omit=' >> .coveragerc
+((++c)) && echo ' */lib/*' >> .coveragerc
+((++c)) && echo ' */venv/*' >> .coveragerc
+((++c)) && echo ' */__init__.py' >> .coveragerc
+((++c)) && echo ' */tests.py' >> .coveragerc
+((++c)) && echo ' functional_tests.py' >> .coveragerc
+((++c)) && echo ' manage.py' >> .coveragerc
+((++c)) && cd boxbusiness && touch .env
 ((++c)) && sed '/^SECRET_KEY/q' settings.py | tail -1 > .env
 ((++c)) && sed -i -- 's/\ //g' .env
 ((++c)) && sed -i -- 's/^\(from.*\)$/\1\nimport sys\nimport environ\nenv = environ.Env()\nenviron.Env.read_env()/g' settings.py
@@ -58,8 +62,7 @@ c=1 && mkdir -p projects/web/django && cd projects/web/django/
 ((++c)) && echo "python3 manage.py migrate" >> __init__.py
 ((++c)) && echo "python3 manage.py inspectdb > models.py" >> __init__.py
 ((++c)) && echo "'''" >> __init__.py
-((++c)) && cd ..
-((++c)) && mkdir templates && cd templates
+((++c)) && cd .. && mkdir templates && cd templates
 ((++c)) && echo '<!DOCTYPE html>' > base.html
 ((++c)) && echo '<html>' >> base.html
 ((++c)) && echo '<head>' >> base.html
@@ -78,18 +81,25 @@ c=1 && mkdir -p projects/web/django && cd projects/web/django/
 ((++c)) && echo "    {% include 'footer.html' %}" >> base.html
 ((++c)) && echo '</body>' >> base.html
 ((++c)) && echo '</html>' >> base.html
-((++c)) && echo "{% extends 'base.html' %}{% block content %}<h1>Hello {{ request.user }}</h1>{% endblock %}" > home.html
-((++c)) && echo '<footer>Now <a href="/admin">login</a> and change the password (see commands.txt)</footer>' > footer.html
-((++c)) && cd ..
-((++c)) && mkdir -p static/js
-((++c)) && mkdir -p static/css
-((++c)) && cd static
+((++c)) && mkdir pages
+((++c)) && echo "{% extends 'base.html' %}{% block content %}<h1>Hello {{ request.user }}</h1>{% endblock %}" > pages/home.html
+((++c)) && echo '<footer><a href="/admin">Login</a> and change the password</footer>' > footer.html
+((++c)) && cd .. && mkdir -p static/css && cd static
 ((++c)) && wget https://learndjango.com/static/images/tutorials/favicon/favicon.ico
-((++c)) && cd css
-((++c)) && echo "body {background-color: #48a94d;}" > style.css
-((++c)) && cd ../..
-((++c)) && echo "def home(request):" >> pages/views.py
-((++c)) && echo "    return render(request, 'home.html', {})" >> pages/views.py
+((++c)) && echo "body {background-color: #48a94d;}" > css/style.css
+((++c)) && cd .. && echo "def home(request):" >> pages/views.py
+((++c)) && echo "    return render(request, 'pages/home.html', {})" >> pages/views.py
+((++c)) && echo -e 'from django.test import SimpleTestCase' > pages/tests.py
+((++c)) && echo -e 'from django.urls import reverse, resolve' >> pages/tests.py
+((++c)) && echo -e 'from .views import *\n\n' >> pages/tests.py
+((++c)) && echo -e 'class TestPages(SimpleTestCase):\n' >> pages/tests.py
+((++c)) && echo -e '    def test_home_url_should_be_resolved(self):' >> pages/tests.py
+((++c)) && echo -e '        url = reverse('home')' >> pages/tests.py
+((++c)) && echo -e '        self.assertEquals(resolve(url).func, home)\n' >> pages/tests.py
+((++c)) && echo -e '    def test_home_GET_should_show_home_page(self):' >> pages/tests.py
+((++c)) && echo -e '        response = self.client.get(reverse('home'))' >> pages/tests.py
+((++c)) && echo -e '        self.assertEquals(response.status_code, 200)' >> pages/tests.py
+((++c)) && echo "        self.assertTemplateUsed(response, 'pages/home.html')" >> pages/tests.py
 ((++c)) && echo -e 'from selenium import webdriver\n' > functional_tests.py
 ((++c)) && echo -e 'def assert_success(browser):' >> functional_tests.py
 ((++c)) && echo -e '    try:' >> functional_tests.py
@@ -101,13 +111,12 @@ c=1 && mkdir -p projects/web/django && cd projects/web/django/
 ((++c)) && echo -e "assert_success(webdriver.Chrome())\n" >> functional_tests.py
 ((++c)) && echo "'''" >> functional_tests.py
 ((++c)) && echo "# https://www.obeythetestinggoat.com/book/pre-requisite-installations.html" >> functional_tests.py
-((++c)) && echo "# Download and copy geckodriver to /usr/local/bin" >> functional_tests.py
-((++c)) && echo "python3 manage.py runserver" >> functional_tests.py
-((++c)) && echo "# In another shell, run the automatic tests (no news is good news!):" >> functional_tests.py
+((++c)) && echo "# - Download and copy geckodriver to /usr/local/bin" >> functional_tests.py
+((++c)) && echo "# - Activate the virtual environment and start the server" >> functional_tests.py
+((++c)) && echo "# - In another shell, run the automatic tests (no news is good news!):" >> functional_tests.py
 ((++c)) && echo "python3 functional_tests.py" >> functional_tests.py
 ((++c)) && echo "'''" >> functional_tests.py
-((++c)) && cd ..
-((++c)) && echo "# BoxBusiness" >> README.md
+((++c)) && cd .. && echo "# BoxBusiness" >> README.md
 ((++c)) && echo "### Django SetUp" >> README.md
 ((++c)) && echo '- Make sure Python 3 is installed: ```which python3```' >> README.md
 ((++c)) && echo '- To install the exact same package-versions, try:' >> README.md
@@ -131,4 +140,4 @@ c=1 && mkdir -p projects/web/django && cd projects/web/django/
 ((++c)) && echo 'coverage run manage.py test -v 2 && coverage report && coverage html' >> README.md
 ((++c)) && echo '```' >> README.md
 ((++c)) && echo 'Inspect: ```~/projects/web/django/src/htmlcov/index.html```' >> README.md
-((++c)) && history | cut -c 8- | tail -n $c > commands.txt && cd src/ && ./manage.py runserver
+((++c)) && history | cut -c 8- | tail -n $c > commands-$(date +"%F-%H-%M-%S").txt && cd src && coverage run manage.py test -v 2 && coverage report && coverage html && ./manage.py runserver
