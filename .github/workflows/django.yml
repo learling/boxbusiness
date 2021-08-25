@@ -29,7 +29,9 @@ jobs:
         echo "$DOT_ENV_FILE" > src/boxbusiness/.env
       env:
         DOT_ENV_FILE: ${{secrets.DOT_ENV_FILE}}
+    - name: Set up Browser
+    - uses: browser-actions/setup-geckodriver@latest
+    - run: geckodriver --version
     - name: Run Tests
       run: |
-        cd src && python manage.py runserver &
         cd src && python manage.py test
