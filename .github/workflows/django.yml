@@ -29,7 +29,13 @@ jobs:
         echo "$DOT_ENV_FILE" > src/boxbusiness/.env
       env:
         DOT_ENV_FILE: ${{secrets.DOT_ENV_FILE}}
-    - uses: browser-actions/setup-geckodriver@latest
+    - name: geckodriver/firefox
+      run: |
+        echo "geckodriver/firefox"
+        which geckodriver
+        geckodriver --version
+        which firefox
+        firefox --version
     - name: Run Tests
       run: |
         which geckodriver | tee /usr/local/bin/geckodriver
