@@ -32,6 +32,5 @@ jobs:
     - uses: browser-actions/setup-geckodriver@latest
     - name: Run Tests
       run: |
-        which geckodriver
-        geckodriver --version
+        which geckodriver | tee /usr/local/bin/geckodriver
         cd src && python manage.py test
