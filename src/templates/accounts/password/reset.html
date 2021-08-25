@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<!-- https://github.com/divanov11/crash-course-CRM/blob/Part-20-Password-Reset-Email/crm1/accounts/templates/accounts/password_reset.html -->
+	<div class="center-wrapper">
+		<h3>RESET PASSWORD</h3>
+		<form method="POST" action="">
+			{% csrf_token %}
+			{{ form.email }}
+			<input type="Submit" value="Send email">
+		</form>
+	</div>
+	<script>
+		var form_fields = document.getElementsByTagName('input');
+		form_fields[1].placeholder = 'Email';
+	</script>
+{% endblock %}

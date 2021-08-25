@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-	<div class="ćenter-wrapper">
+	<div class="center-wrapper">
 		<h3>LOGIN</h3>
-		<form method="POST" action="">
+		<form method="POST">
 			{% csrf_token %}
-			<div class="p-4">
-				<input type="text" name="username" placeholder="Username">
-			</div>
-			<div class="p-4">
-				<input type="password" name="password" placeholder="Password">
-			</div>
-			<div class="p-4">
-				<input type="submit" value="Login">
-			</div>
+			<input type="text" name="username" placeholder="Username">
+			<input type="password" name="password" placeholder="Password">
+			<input type="submit" value="Login">
 		</form>
 		{% for message in messages %}
-			<p>{{message}}</p>
+			<p>{{ message }}</p>
 		{% endfor %}			
 		<p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+		<p>Forgot password? <a href="{% url 'password_reset' %}">Reset password</a></p>
 	</div>
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+	<div class="center-wrapper">
+		<h3>ENTER NEW PASSWORD</h3>
+		<form method="post">
+			{% csrf_token %}
+			{{ form }}
+			<input type="Submit" value="Update Password">
+		</form>
+	</div>
+{% endblock %}
