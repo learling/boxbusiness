@@ -2,7 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main ]
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened ]
 
 jobs:
   build:
