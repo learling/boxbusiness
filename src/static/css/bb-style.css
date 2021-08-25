@@ -23,13 +23,13 @@ a {
 a:hover {
 	color: white;
 }
-.ćenter-wrapper {
+.center-wrapper {
     display: block;
     text-align: center;
     margin: auto;
 }
-.p-4, input {
-	padding: .4rem;
+.center-wrapper form {
+    display: inline-grid;
 }
 .p-16 {
 	padding: 1.6rem;
@@ -40,6 +40,8 @@ input {
 	background-color: white;
 	border-left: .2rem solid var(--bb-yellow);
 	box-shadow: .04rem .04rem black;
+	padding: .4rem;
+	margin: .4rem;
 }
 input[type="submit"] {
 	cursor: pointer;
