@@ -1,3 +1,4 @@
+![example workflow](https://github.com/learling/boxbusiness/actions/workflows/django.yml/badge.svg)
 # BoxBusiness
 ### Django SetUp
 - Make sure Python 3 is installed: ```which python3```
