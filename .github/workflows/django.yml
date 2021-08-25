@@ -31,9 +31,6 @@ jobs:
         DOT_ENV_FILE: ${{secrets.DOT_ENV_FILE}}
     - name: Prepare Selenium
       uses: nanasess/setup-chromedriver@v1.0.5
-    - name: Start XVFB
-      run: |
-        Xvfb :99 &
     - name: Run Tests
       run: |
         cd src && python manage.py test
