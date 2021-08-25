@@ -65,3 +65,7 @@ Start the server in production-mode:
 sudo docker-compose -f \
  docker-compose-deploy.yml up --build -d
 ```
+Update:
+```console
+git pull
+```
