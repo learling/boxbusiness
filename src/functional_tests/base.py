@@ -38,7 +38,7 @@ class FunctionalTests(StaticLiveServerTestCase):
         options = webdriver.FirefoxOptions()
         options.headless = True
         webdriver.Firefox(options=options)
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
 
     def tearDown(self):
         self.browser.quit()
