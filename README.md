@@ -27,6 +27,6 @@ Inspect: ```~/projects/web/django/src/htmlcov/index.html```
 ## Deployment
 
 First try with [YT-tutorial](https://www.youtube.com/watch?v=nh1ynJGJuT8) from 
-London App Developer:
+*London App Developer*:
 
 See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/1da4daf036c6dd41abaf2e9e7e878cf490c3aad9)
