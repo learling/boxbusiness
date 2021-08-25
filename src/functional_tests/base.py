@@ -37,9 +37,8 @@ class FunctionalTests(StaticLiveServerTestCase):
         self.u = settings.TEST_USER
         self.delete_test_user()
         chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument('--no-sandbox')
-        self.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=chrome_options)
+        chrome_options.add_argument('--headless')
+        self.browser = webdriver.Chrome(options=chrome_options)
 
     def tearDown(self):
         self.browser.quit()
