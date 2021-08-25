@@ -28,4 +28,4 @@ Inspect: ```~/projects/web/django/src/htmlcov/index.html```
 First try with [YT-tutorial](https://www.youtube.com/watch?v=nh1ynJGJuT8) from 
 London App Developer:
 
-See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/b4f8e0ac7a768435af48acd3ba8dbd94a4623638)
+See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/1da4daf036c6dd41abaf2e9e7e878cf490c3aad9)
