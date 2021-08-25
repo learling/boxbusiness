@@ -7,7 +7,7 @@ services:
     volumes:
       - static_data:/vol/web
     environment:
-      - ALLOWED_HOSTS=127.0.0.1,localhost
+      - ALLOWED_HOSTS=box.ivanne.de,127.0.0.1,localhost
 
   proxy:
     build:
