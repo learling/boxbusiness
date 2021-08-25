@@ -35,6 +35,9 @@ class FunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.u = settings.TEST_USER
         self.delete_test_user()
+        options = webdriver.FirefoxOptions()
+        options.headless = True
+        webdriver.Firefox(options=options)
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
