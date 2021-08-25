@@ -31,4 +31,5 @@ jobs:
         DOT_ENV_FILE: ${{secrets.DOT_ENV_FILE}}
     - name: Run Tests
       run: |
+        cd src && python manage.py runserver &
         cd src && python manage.py test
