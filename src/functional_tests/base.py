@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.chrome.options import Options
 import time
 
 # https://github.com/hjwp/book-example/blob/chapter_fixtures_and_wait_decorator/functional_tests/base.py
@@ -35,10 +36,10 @@ class FunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.u = settings.TEST_USER
         self.delete_test_user()
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        webdriver.Chrome(options=options)
-        self.browser = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument('--no-sandbox')
+        self.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=chrome_options)
 
     def tearDown(self):
         self.browser.quit()
