@@ -6,17 +6,20 @@ services:
       context: .
     volumes:
       - static_data:/vol/web
+    expose:
+      - 8000
     environment:
-      - ALLOWED_HOSTS=box.ivanne.de,127.0.0.1,localhost
+      - ALLOWED_HOSTS=dev.ivanne.de,127.0.0.1,localhost
 
   proxy:
     build:
       context: ./nginx
     volumes:
       - static_data:/vol/static
-      - /etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/dev.ivanne.de:/etc/nginx/dev.ivanne.de:ro
     ports:
-      - 443:8080
+      - 443:443
+      - 80:80
     depends_on:
       - app
 

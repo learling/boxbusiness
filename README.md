@@ -1,10 +1,10 @@
-![example workflow](https://github.com/learling/boxbusiness/actions/workflows/django.yml/badge.svg)
+![workflow](https://github.com/learling/boxbusiness/actions/workflows/django.yml/badge.svg)
 # BoxBusiness
 ### Django SetUp
 - Make sure Python 3 is installed: ```which python3```
 - To install the exact same package-versions, try:
 ```pip3 install -r requirements.txt```
-- Read and adapt the Ubuntu [commands](commands.txt)
+- Read and adapt the Ubuntu [commands](setup/commands.txt)
 - Run the first [functional tests](src/functional_tests.py)
 ### MySQL-Database
 Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusiness/__init__.py)
@@ -23,14 +23,11 @@ Edit ```.coveragerc``` and run:
 coverage run manage.py test -v 2 && coverage report && coverage html
 ```
 Inspect: ```~/projects/web/django/src/htmlcov/index.html```
-
 ## Deployment
-
 First try with [YT-tutorial](https://www.youtube.com/watch?v=nh1ynJGJuT8) from 
 *London App Developer*:
 
 See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/1da4daf036c6dd41abaf2e9e7e878cf490c3aad9)
-
 ### Server
 
 Install Docker, Compose and Git:
@@ -55,7 +52,6 @@ Show the **public** key to copy and paste intohttps://github.com/settings/key:
 cat ~/.ssh/id_rsa.pub
 ```
 Fetch+merge and switch to main branch:
-
 ```console
 git fetch
 git checkout main
@@ -65,7 +61,37 @@ Start the server in production-mode:
 sudo docker-compose -f \
  docker-compose-deploy.yml up --build -d
 ```
-Update:
+To update:
 ```console
 git pull
+```
+To clean up:
+```console
+sudo docker system prune
+```
+### Certificate
+Create/Renew certificate:
+```console
+shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo chmod +x certdomain.sh 
+shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo ./certdomain.sh dev.ivanne.de
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator standalone, Installer None
+Cert not yet due for renewal
+Keeping the existing certificate
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Certificate not yet due for renewal; no action taken.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+Automate daily renewal (sudo is important):
+```console
+sudo crontab -e
+```
+```bash
+DJSCRIPTS=/home/shell/projects/web/django/scripts
+0 0 * * * chmod +x $DJSCRIPTS/certdomain.sh && $DJSCRIPTS/certdomain.sh dev.ivanne.de > /var/log/certdomain.log 2>&1
+```
+Check the logfile:
+```console
+cat /var/log/certdomain.log
 ```
