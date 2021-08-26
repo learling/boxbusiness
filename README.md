@@ -90,18 +90,32 @@ Check the logfile:
 cat /var/log/certdomain.log
 ```
 ### Server
-Start the server in production-mode (remove ```-d``` to see the logs):
+Start the server in production-mode and check the logs:
 ```console
-sudo docker-compose -f \
- docker-compose-deploy.yml up --build -d
+sudo docker-compose -f docker-compose-deploy.yml up --build
 ```
+
+-d
+
+
 To update the project:
 ```console
 git pull
 ```
-To clean up docker:
+To clean up Docker if needed:
 ```console
 sudo docker system prune
+```
+If Compose get stuck:
+```console
+sudo aa-remove-unknown
+```
+If a port is already allocated:
+```console
+sudo docker-compose down
+sudo docker ps -a
+sudo docker rm -f <container> [<other-container>]
+sudo kill -9 <pid>
 ```
 ### Release
 Delete old tag:
