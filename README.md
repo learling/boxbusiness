@@ -105,14 +105,12 @@ cat /var/log/certdomain.log
 ```
 ### Release
 Delete tag:
-
 ```console
 git tag -l
-git tag -d TAGNAME
-git push --delete origin TAGNAME
+git tag -d <tagname>
+git push --delete origin <tagname>
 ```
 Create tag:
-
 ```console
 export TAG=$(date +DEPLOYED-%F-%H-%M)
 git tag $TAG
