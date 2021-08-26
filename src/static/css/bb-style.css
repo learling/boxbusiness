@@ -27,6 +27,7 @@ a:hover {
     display: block;
     text-align: center;
     margin: auto;
+    width: clamp(400px, 60vw, 600px);
 }
 .center-wrapper form {
     display: inline-grid;

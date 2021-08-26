@@ -11,4 +11,4 @@ services:
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
       - DEBUG=1
-      - ALLOWED_HOSTS=dev.ivanne.de
+      - ALLOWED_HOSTS=dev.ivanne.de,127.0.0.1,localhost
