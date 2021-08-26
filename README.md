@@ -31,13 +31,12 @@ First try with [YT-tutorial](https://www.youtube.com/watch?v=nh1ynJGJuT8) from
 *London App Developer*:
 
 See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/1da4daf036c6dd41abaf2e9e7e878cf490c3aad9)
-### Server
-
-Install Docker, Compose and Git:
-
+### Installation
+Install Docker, Docker Compose, Certbot and Git:
 ```console
 sudo apt update
-sudo apt docker docker-compose
+sudo apt install docker docker-compose
+sudo apt install certbot
 sudo apt install git
 ```
 ```console
@@ -46,39 +45,26 @@ cd ~/projects/web/django
 git init
 git remote add origin git@github.com:learling/boxbusiness.git
 ```
-Create key-pair into the default path:
+Create key-pair in the default path:
 ```console
 ssh-keygen -t rsa
 ```
-Show the **public** key to copy and paste into https://github.com/settings/key:
+Show the **public** key to copy and paste it into https://github.com/settings/key:
 ```console
 cat ~/.ssh/id_rsa.pub
 ```
-Fetch and switch to main branch:
+Fetch the current repo and switch to the main branch:
 ```console
 git fetch
 git checkout main
 ```
-Paste the content of ```.env```:
+Paste the content of ```.env``` here:
 ```console
 touch ~/projects/web/django/src/boxbusiness/.env
 nano ~/projects/web/django/src/boxbusiness/.env
 ```
-Start the server in production-mode (remove -d to see the logs):
-```console
-sudo docker-compose -f \
- docker-compose-deploy.yml up --build -d
-```
-To update:
-```console
-git pull
-```
-To clean up:
-```console
-sudo docker system prune
-```
 ### Certificate
-Create/Renew certificate:
+Create and renew the free certificate:
 ```console
 shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo chmod +x certdomain.sh 
 shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo ./certdomain.sh dev.ivanne.de
@@ -91,7 +77,7 @@ Keeping the existing certificate
 Certificate not yet due for renewal; no action taken.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
-Automate daily renewal (sudo is important):
+Automate the daily renewal (```sudo``` is important):
 ```console
 sudo crontab -e
 ```
@@ -103,14 +89,28 @@ Check the logfile:
 ```console
 cat /var/log/certdomain.log
 ```
+### Server
+Start the server in production-mode (remove ```-d``` to see the logs):
+```console
+sudo docker-compose -f \
+ docker-compose-deploy.yml up --build -d
+```
+To update the project:
+```console
+git pull
+```
+To clean up docker:
+```console
+sudo docker system prune
+```
 ### Release
-Delete tag:
+Delete old tag:
 ```console
 git tag -l
 git tag -d <tagname>
 git push --delete origin <tagname>
 ```
-Create tag:
+Create new tag:
 ```console
 export TAG=$(date +DEPLOYED-%F-%H-%M)
 git tag $TAG
