@@ -47,11 +47,11 @@ Create key-pair into the default path:
 ```console
 ssh-keygen -t rsa
 ```
-Show the **public** key to copy and paste intohttps://github.com/settings/key:
+Show the **public** key to copy and paste into https://github.com/settings/key:
 ```console
 cat ~/.ssh/id_rsa.pub
 ```
-Fetch+merge and switch to main branch:
+Fetch and switch to main branch:
 ```console
 git fetch
 git checkout main
