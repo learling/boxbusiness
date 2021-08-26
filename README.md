@@ -1,4 +1,7 @@
 ![workflow](https://github.com/learling/boxbusiness/actions/workflows/django.yml/badge.svg)
+---
+**DISCLAIMER**: This is just an experimental project for learning purposes only.
+---
 # BoxBusiness
 ### Django SetUp
 - Make sure Python 3 is installed: ```which python3```
@@ -56,7 +59,12 @@ Fetch and switch to main branch:
 git fetch
 git checkout main
 ```
-Start the server in production-mode:
+Paste the content of ```.env```:
+```console
+touch ~/projects/web/django/src/boxbusiness/.env
+nano ~/projects/web/django/src/boxbusiness/.env
+```
+Start the server in production-mode (remove -d to see the logs):
 ```console
 sudo docker-compose -f \
  docker-compose-deploy.yml up --build -d
@@ -94,4 +102,19 @@ DJSCRIPTS=/home/shell/projects/web/django/scripts
 Check the logfile:
 ```console
 cat /var/log/certdomain.log
+```
+### Release
+Delete tag:
+
+```console
+git tag -l
+git tag -d TAGNAME
+git push --delete origin TAGNAME
+```
+Create tag:
+
+```console
+export TAG=$(date +DEPLOYED-%F-%H-%M)
+git tag $TAG
+git push origin $TAG
 ```
