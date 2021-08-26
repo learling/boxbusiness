@@ -64,18 +64,11 @@ touch ~/projects/web/django/src/boxbusiness/.env
 nano ~/projects/web/django/src/boxbusiness/.env
 ```
 ### Certificate
-Create and renew the free certificate:
+Generate the free certificate:
 ```console
-shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo chmod +x certdomain.sh 
-shell@ubuntu-2gb-fsn1-1:~/projects/web/django/scripts$ sudo ./certdomain.sh dev.ivanne.de
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Plugins selected: Authenticator standalone, Installer None
-Cert not yet due for renewal
-Keeping the existing certificate
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Certificate not yet due for renewal; no action taken.
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cd ~/projects/web/django/scripts
+sudo chmod +x certdomain.sh 
+sudo ./certdomain.sh dev.ivanne.de
 ```
 Automate the daily renewal (```sudo``` is important):
 ```console
@@ -90,23 +83,35 @@ Check the logfile:
 cat /var/log/certdomain.log
 ```
 ### Server
-Start the server in production-mode and check the logs:
+Start with the default ports:
 ```console
-sudo docker-compose -f docker-compose-deploy.yml up --build
+cd ~/projects/web/django/
+export HTTP=80
+export HTTPS=443
+sudo -E docker-compose -f docker-compose-deploy.yml \
+ -p stack1 up -d --build
 ```
-
--d
-
-
-To update the project:
+To seamlessly update the project, start ```stack2``` with different ports before killing ```stack1```:
 ```console
 git pull
+export HTTP=8080
+export HTTPS=8443
+sudo -E docker-compose -f docker-compose-deploy.yml \
+ -p stack2 up -d --build
+sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
+ REDIRECT --to-ports 8080
+sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j \
+ REDIRECT --to-ports 8443
+sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j \
+ REDIRECT --to-port 8080
+sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j \
+ REDIRECT --to-port 8443
 ```
-To clean up Docker if needed:
+To clean up Docker:
 ```console
 sudo docker system prune
 ```
-If Compose get stuck:
+If Compose is complaining:
 ```console
 sudo aa-remove-unknown
 ```
