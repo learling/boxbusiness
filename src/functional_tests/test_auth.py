@@ -21,7 +21,7 @@ class TestAuthentication(FunctionalTests):
         self.wait_for_body_contains(LOGIN_PATTERN)
         or_ = ' [oO][rR] '
         name_or_passw = f'([uU]sername{or_}password)|([pP]assword{or_}[uU]sername)'
-        self.wait_for_body_contains(name_or_passw + ' (is)? incorrect TEST')
+        self.wait_for_body_contains(name_or_passw + ' (is)? incorrect')
 
     def register_user(self, username, email, password1, password2):
         self.browser.find_element_by_name('username').send_keys(username)
@@ -43,7 +43,7 @@ class TestAuthentication(FunctionalTests):
         self.browser.find_element_by_name('password').send_keys(self.u['passw'])
         submit = "//input[@type='submit' and @value='Login']"
         self.browser.find_element_by_xpath(submit).click()
-        self.wait_for_body_contains('(Log|Sign) out')
+        self.wait_for_body_contains('(Log|Sign) TEST out')
 
     def test_login_incorrect_username_should_show_general_info(self):
         self.assert_invalid_user(self.u['name'], 'wrong' + self.u['passw'])
