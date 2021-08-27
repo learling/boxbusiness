@@ -17,6 +17,7 @@ cp global-bundle.pem ~/projects/web/django/src/boxbusiness
 mysql -h dbname.ffffffffffff.eu-west-1.rds.amazonaws.com \
  --ssl-ca=global-bundle.pem -P 3306 -u masterusername -p
 ```
+```settings.py```:
 ```python
 DATABASES = {
     'default': {
