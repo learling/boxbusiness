@@ -131,7 +131,7 @@ export HTTPS=443
 sudo -E docker-compose -f docker-compose-deploy.yml \
  -p stack1 up -d --build
 ```
-To seamlessly update the project, start ```stack2``` with different ports before killing ```stack1```:
+To seamlessly update the project, temporary run ```stack2``` with different ports before restarting ```stack1```:
 ```console
 git pull
 export HTTP=8080
