@@ -36,15 +36,14 @@ class FunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.u = settings.TEST_USER
         self.delete_test_user()
-        #if os.environ.get('GITHUB_ACTIONS') == 1:
-        print(os.environ.get('GITHUB_ACTIONS'))
-        options = Options()
-        options.add_argument('--headless')
-        self.browser = webdriver.Chrome(
-            options=options
-        )
-        #else:
-        #    self.browser = webdriver.Firefox()
+        if os.environ.get('GITHUB_ACTIONS') == '1':
+            options = Options()
+            options.add_argument('--headless')
+            self.browser = webdriver.Chrome(
+                options=options
+            )
+        else:
+            self.browser = webdriver.Firefox()
 
     def tearDown(self):
         self.browser.quit()
