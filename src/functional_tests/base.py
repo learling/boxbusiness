@@ -37,15 +37,13 @@ class FunctionalTests(StaticLiveServerTestCase):
         self.u = settings.TEST_USER
         self.delete_test_user()
         if os.environ.get('GITHUB_ACTIONS') == '1':
-            options = Options()
-            options.add_argument('--headless')
+            chrome_options = webdriver.chrome.options.Options()
+            chrome_options.add_argument('--headless')
             self.browser = webdriver.Chrome(
-                options=options
+                options=chrome_options
             )
         else:
-            self.browser = webdriver.Firefox(
-                executable_path=r'/usr/local/bin/geckodriver', 
-            )
+            self.browser = webdriver.Firefox()
 
     def tearDown(self):
         self.browser.quit()

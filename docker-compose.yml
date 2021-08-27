@@ -8,7 +8,6 @@ services:
       - 8000:8000
     volumes:
       - ./src:/app
-      - /usr/local/bin/geckodriver:/usr/local/bin/geckodriver
     command: sh -c "python manage.py test"
     environment:
       - DEBUG=1

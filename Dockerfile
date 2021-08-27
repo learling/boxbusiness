@@ -10,15 +10,12 @@ RUN apk del .tmp
 RUN mkdir /app
 COPY ./src app
 WORKDIR /app
-COPY ./scripts /scripts
+COPY ./scripts/ /scripts/
 
 RUN chmod +x /scripts/*
 
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
-RUN mkdir -p /usr/local/bin
-
-COPY /usr/local/bin/geckodriver /usr/local/bin/geckodriver
 
 RUN adduser -D dockeruser
 RUN chown -R dockeruser:dockeruser /vol
