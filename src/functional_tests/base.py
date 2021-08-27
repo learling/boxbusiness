@@ -43,7 +43,9 @@ class FunctionalTests(StaticLiveServerTestCase):
                 options=options
             )
         else:
-            self.browser = webdriver.Firefox()
+            self.browser = webdriver.Firefox(
+                executable_path=r'/usr/local/bin/geckodriver', 
+            )
 
     def tearDown(self):
         self.browser.quit()
