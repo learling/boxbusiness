@@ -21,7 +21,7 @@ class TestAuthentication(FunctionalTests):
         self.wait_for_body_contains(LOGIN_PATTERN)
         or_ = ' [oO][rR] '
         name_or_passw = f'([uU]sername{or_}password)|([pP]assword{or_}[uU]sername)'
-        name_or_passw + ' (is)? incorrect'
+        name_or_passw + ' (is)? incorrect TEST'
         self.wait_for_body_contains(name_or_passw + ' (is)? incorrect')
 
     def register_user(self, username, email, password1, password2):
