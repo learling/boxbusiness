@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
 
@@ -35,4 +35,5 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.5
     - name: Run Tests
       run: |
+        export GITHUB_ACTIONS=1
         cd src && python manage.py test

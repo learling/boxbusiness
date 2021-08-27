@@ -4,7 +4,8 @@ from django.conf import settings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
-import time
+import time, socket
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 # https://github.com/hjwp/book-example/blob/chapter_fixtures_and_wait_decorator/functional_tests/base.py
 
@@ -36,9 +37,14 @@ class FunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.u = settings.TEST_USER
         self.delete_test_user()
-        chrome_options = Options()
-        chrome_options.add_argument('--headless')
-        self.browser = webdriver.Chrome(options=chrome_options)
+        if settings.GITHUB_ACTIONS == 1:
+            options = Options()
+            options.add_argument('--headless')
+            self.browser = webdriver.Chrome(
+                options=options
+            )
+        else:
+            self.browser = webdriver.Firefox()
 
     def tearDown(self):
         self.browser.quit()

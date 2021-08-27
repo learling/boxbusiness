@@ -91,7 +91,10 @@ DATABASES = {
         'PORT': env('DB_PORT'),
         'PASSWORD': env('DB_PASSWORD'),
         'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_ALL_TABLES'"
+            'init_command': "SET sql_mode='STRICT_ALL_TABLES'",
+            'ssl': {
+                'key': 'global-bundle.pem'
+            }
         }
     }
 }
@@ -182,3 +185,5 @@ EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = SITE_OWNER['email']
+
+GITHUB_ACTIONS = os.environ.get('GITHUB_ACTIONS', 0)

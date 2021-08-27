@@ -5,12 +5,50 @@
 # BoxBusiness
 ### Django SetUp
 - Make sure Python 3 is installed: ```which python3```
-- To install the exact same package-versions, try:
-```pip3 install -r requirements.txt```
 - Read and adapt the Ubuntu [commands](setup/commands.txt)
-- Run the first [functional tests](src/functional_tests.py)
 ### MySQL-Database
 Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusiness/__init__.py)
+
+**AWS RDS SSL**
+```console
+sudo apt install mysql-client-core-8.0
+wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
+cp global-bundle.pem ~/projects/web/django/src/boxbusiness
+mysql -h dbname.ffffffffffff.eu-west-1.rds.amazonaws.com --ssl-ca=global-bundle.pem -P 3306 -u masterusername -p
+```
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_ALL_TABLES'",
+            'ssl': {
+                'key': 'global-bundle.pem'
+            }
+        }
+    }
+}
+```
+Add the bunch of Django-tables (e.g. *auth_user*):
+```console
+~/projects/web/django
+source bin/activate
+cd src
+python3 manage.py migrate
+```
+Open a second shell to assert encryption:
+```console
+sudo tcpdump -X port 3306
+```
+In the first shell, create a superuser and you should not be able to capture any SQL in the second shell:
+```console
+python3 manage.py createsuperuser
+```
 ### VCS with GitHub
 ```console
 git init
@@ -32,7 +70,7 @@ First try with [YT-tutorial](https://www.youtube.com/watch?v=nh1ynJGJuT8) from
 
 See commits [Prepare deployment with docker](https://github.com/learling/boxbusiness/commit/1da4daf036c6dd41abaf2e9e7e878cf490c3aad9)
 ### Installation
-Install Docker, Docker Compose, Certbot and Git:
+On the VPS, install Docker, Docker Compose, Certbot and Git:
 ```console
 sudo apt update
 sudo apt install docker docker-compose
