@@ -14,7 +14,8 @@ Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusi
 sudo apt install mysql-client-core-8.0
 wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
 cp global-bundle.pem ~/projects/web/django/src/boxbusiness
-mysql -h dbname.ffffffffffff.eu-west-1.rds.amazonaws.com --ssl-ca=global-bundle.pem -P 3306 -u masterusername -p
+mysql -h dbname.ffffffffffff.eu-west-1.rds.amazonaws.com \
+ --ssl-ca=global-bundle.pem -P 3306 -u masterusername -p
 ```
 ```python
 DATABASES = {
