@@ -21,6 +21,8 @@ RUN adduser -D dockeruser
 RUN chown -R dockeruser:dockeruser /vol
 RUN chmod -R 755 /vol/web
 
+COPY /usr/local/bin/geckodriver /usr/local/bin/geckodriver
+
 USER dockeruser
 
 CMD ["entrypoint.sh"]
