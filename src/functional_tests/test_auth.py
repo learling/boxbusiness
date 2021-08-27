@@ -43,7 +43,7 @@ class TestAuthentication(FunctionalTests):
         self.browser.find_element_by_name('password').send_keys(self.u['passw'])
         submit = "//input[@type='submit' and @value='Login']"
         self.browser.find_element_by_xpath(submit).click()
-        self.wait_for_body_contains('(Log|Sign) TESTout')
+        self.wait_for_body_contains('(Log|Sign) out')
 
     def test_login_incorrect_username_should_show_general_info(self):
         self.assert_invalid_user(self.u['name'], 'wrong' + self.u['passw'])
