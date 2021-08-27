@@ -35,5 +35,4 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.5
     - name: Run Tests
       run: |
-        export GITHUB_ACTIONS=1
-        cd src && python manage.py test
+        cd src && GITHUB_ACTIONS=1 ./manage.py test --failfast
