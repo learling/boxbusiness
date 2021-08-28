@@ -118,7 +118,7 @@ sudo crontab -e
 DJSCRIPTS=/home/shell/projects/web/django/scripts
 0 0 * * * chmod +x $DJSCRIPTS/certdomain.sh && $DJSCRIPTS/certdomain.sh ivanne.de > /var/log/certdomain.log 2>&1
 ```
-Check the logfile:
+To check the logfile:
 ```console
 cat /var/log/certdomain.log
 ```
@@ -130,7 +130,7 @@ cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build
 ```
 ### Server
-Start with the default ports (don't forget to adapt the domain-name):
+Start with the default ports (don't forget to adapt the domain-name, otherwise you could get a 400-status):
 ```console
 export HTTP=80
 export HTTPS=443
