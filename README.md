@@ -130,36 +130,25 @@ cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build
 ```
 ### Server
-Start with the default ports:
+Start with the default ports (don't forget to adapt the domain-name):
 ```console
 export HTTP=80
 export HTTPS=443
 export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack1 up -d --build
 ```
-Following is still not working:
-
----
-
-To seamlessly update the project, temporary run ```stack2``` with different ports before restarting ```stack1```:
+To seamlessly update the project, temporary run ```stack2``` with different ports - before restarting ```stack1```:
 ```console
 git pull
 export HTTP=8080
 export HTTPS=8443
 export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
-#sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
- REDIRECT --to-ports 8080
-#sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j \
- REDIRECT --to-ports 8443
-#sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j \
- REDIRECT --to-port 8080
-#sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j \
- REDIRECT --to-port 8443
+
+sudo iptables -A INPUT -i eth0 -p tcp --dport 443 -j ACCEPT
+sudo iptables -A INPUT -i eth0 -p tcp --dport 8443 -j ACCEPT
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8443
 ```
-
----
-
 To clean up Docker:
 ```console
 sudo docker system prune
