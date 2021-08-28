@@ -2,6 +2,11 @@ FROM python:3.8-alpine
 
 COPY ./requirements-test.txt /requirements.txt
 
+RUN echo http://repository.fit.cvut.cz/mirrors/alpine/v3.14/main \
+ > /etc/apk/repositories
+RUN echo http://repository.fit.cvut.cz/mirrors/alpine/v3.14/community \
+ >> /etc/apk/repositories
+
 RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
 RUN pip install -r /requirements.txt
 RUN apk del .tmp
