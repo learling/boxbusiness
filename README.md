@@ -137,6 +137,10 @@ export HTTPS=443
 export DOMAIN=box.ivanne.de
 sudo -E docker-compose -p stack1 up -d --build
 ```
+Following is still not working:
+
+---
+
 To seamlessly update the project, temporary run ```stack2``` with different ports before restarting ```stack1```:
 ```console
 git pull
@@ -144,15 +148,18 @@ export HTTP=8080
 export HTTPS=8443
 export DOMAIN=box.ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
-sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
+#sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
  REDIRECT --to-ports 8080
-sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j \
+#sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j \
  REDIRECT --to-ports 8443
-sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j \
+#sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j \
  REDIRECT --to-port 8080
-sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j \
+#sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j \
  REDIRECT --to-port 8443
 ```
+
+---
+
 To clean up Docker:
 ```console
 sudo docker system prune
