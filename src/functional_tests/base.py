@@ -7,7 +7,6 @@ from selenium.webdriver.chrome.options import Options
 import time, os
 
 # https://github.com/hjwp/book-example/blob/chapter_fixtures_and_wait_decorator/functional_tests/base.py
-
 MAX_WAIT = 9
 
 
@@ -36,8 +35,9 @@ class FunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.u = settings.TEST_USER
         self.delete_test_user()
-        if os.environ.get('GITHUB_ACTIONS') == '1':
+        if os.environ.get('HEADLESS') == '1':
             chrome_options = webdriver.chrome.options.Options()
+            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument('--headless')
             self.browser = webdriver.Chrome(
                 options=chrome_options

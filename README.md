@@ -122,22 +122,24 @@ Check the logfile:
 ```console
 cat /var/log/certdomain.log
 ```
+### Container-test
+```console
+sudo docker-compose -f docker-compose-test.yml up --build
+```
 ### Server
 Start with the default ports:
 ```console
 cd ~/projects/web/django/
 export HTTP=80
 export HTTPS=443
-sudo -E docker-compose -f docker-compose-deploy.yml \
- -p stack1 up -d --build
+sudo -E docker-compose -p stack1 up -d --build
 ```
 To seamlessly update the project, temporary run ```stack2``` with different ports before restarting ```stack1```:
 ```console
 git pull
 export HTTP=8080
 export HTTPS=8443
-sudo -E docker-compose -f docker-compose-deploy.yml \
- -p stack2 up -d --build
+sudo -E docker-compose -p stack2 up -d --build
 sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
  REDIRECT --to-ports 8080
 sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j \

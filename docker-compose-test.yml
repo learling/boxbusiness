@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-test
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/app
+    command: sh -c "HEADLESS=1 python manage.py test --failfast"
+    environment:
+      - DEBUG=1
+      - ALLOWED_HOSTS=dev.ivanne.de,127.0.0.1,localhost
