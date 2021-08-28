@@ -140,6 +140,7 @@ sudo -E docker-compose -p stack1 up -d --build
 To seamlessly update the project, temporary run ```stack2``` with different ports - before restarting ```stack1```:
 ```console
 git pull
+
 export HTTP=8080
 export HTTPS=8443
 export DOMAIN=ivanne.de
@@ -149,9 +150,9 @@ sudo iptables -A INPUT -i eth0 -p tcp --dport 443 -j ACCEPT
 sudo iptables -A INPUT -i eth0 -p tcp --dport 8443 -j ACCEPT
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
  --dport 443 -j REDIRECT --to-port 8443
-sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
-sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
+#sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+#sudo iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
+#sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
  --dport 80 -j REDIRECT --to-port 8080
 ```
 To clean up Docker:
