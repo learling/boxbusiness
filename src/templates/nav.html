@@ -1,5 +1,5 @@
 <nav class="navbar">
-	<a href="/" class="red">Unsecure toy site</a>
+	<a href="/" class="red"><b>Unsecure toy site</b></a>
 	{% if request.user.is_authenticated %}
 		<span class="sep">|</span>
 		<a href="{% url 'profile' %}">Profile</a>
