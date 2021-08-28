@@ -9,8 +9,7 @@
 body, main {
 	margin: 0;
 	padding: 0;
-	/*background-color: var(--bb-green);*/
-	background-color: gray;
+	background-color: var(--bb-green);
 	ḿin-height: 100vh;
 }
 body, input, a, p {

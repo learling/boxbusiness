@@ -110,7 +110,7 @@ cd ~/projects/web/django/scripts
 sudo chmod +x certdomain.sh
 sudo ./certdomain.sh ivanne.de
 ```
-Automate the daily renewal (```sudo``` is important):
+Automate the daily (midnight) renewal (```sudo``` is important):
 ```console
 sudo crontab -e
 ```
@@ -134,6 +134,7 @@ Start with the default ports:
 ```console
 export HTTP=80
 export HTTPS=443
+export DOMAIN=box.ivanne.de
 sudo -E docker-compose -p stack1 up -d --build
 ```
 To seamlessly update the project, temporary run ```stack2``` with different ports before restarting ```stack1```:
@@ -141,6 +142,7 @@ To seamlessly update the project, temporary run ```stack2``` with different port
 git pull
 export HTTP=8080
 export HTTPS=8443
+export DOMAIN=box.ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
 sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
  REDIRECT --to-ports 8080
