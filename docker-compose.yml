@@ -17,8 +17,8 @@ services:
       - static_data:/vol/static
       - ./nginx/cert:/etc/nginx/cert:ro
     ports:
-      - ${HTTPS}:443
-      - ${HTTP}:80
+      - ${HTTPS_MAPPING}
+      - ${HTTP_MAPPING}
     depends_on:
       - app
 
