@@ -124,7 +124,7 @@ cat /var/log/certdomain.log
 ```
 ### Container-test
 For the ```functional_tests```, 2GB RAM are ***not*** enough!
-It works with 2 vCPUs and 4GB RAM.
+It works with 2 vCPUs and 4GB RAM (check it with ```htop``` in a parallel SSH-session).
 ```console
 cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build
@@ -140,53 +140,47 @@ sudo -E docker-compose -p stack1 up -d --build
 To seamlessly update the project, temporary run ```stack2``` with different ports - before restarting ```stack1```:
 ```console
 git pull
-
+```
+```console
 export HTTP=8080
 export HTTPS=8443
 export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
-
-sudo iptables -A INPUT -i eth0 -p tcp --dport 443 -j ACCEPT
-sudo iptables -A INPUT -i eth0 -p tcp --dport 8443 -j ACCEPT
+```
+```console
+sudo iptables -A INPUT -i eth0 -p tcp -m tcp \
+ --dport 443 -j ACCEPT
+sudo iptables -A INPUT -i eth0 -p tcp -m tcp \
+ --dport 8443 -j ACCEPT
+sudo iptables -A INPUT -i eth0 -p tcp -m tcp \
+ --dport 80 -j ACCEPT
+sudo iptables -A INPUT -i eth0 -p tcp -m tcp \
+ --dport 8080 -j ACCEPT
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
  --dport 443 -j REDIRECT --to-port 8443
-
-#sudo iptables -A OUTPUT -p tcp --sport 443 -j ACCEPT
-#sudo iptables -A OUTPUT -p tcp --sport 8443 -j ACCEPT
-
-#sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
-#sudo iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
-#sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
- --dport 80 -j REDIRECT --to-port 8080
-
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
  --dport 80 -j REDIRECT --to-port 8443
 ```
 To clean up Docker:
 ```console
+sudo docker ps -a
+sudo docker rm -f <container1> [<container2>]
 sudo docker system prune
 ```
-If Compose is complaining:
+If Compose is complaining (?) - somehow:
 ```console
 sudo aa-remove-unknown
 ```
-If a port is already allocated:
-```console
-sudo docker-compose down
-sudo docker ps -a
-sudo docker rm -f <container> [<other-container>]
-sudo kill -9 <pid>
-```
 ### Release
-Delete old tag:
-```console
-git tag -l
-git tag -d <tagname>
-git push --delete origin <tagname>
-```
 Create new tag:
 ```console
 export TAG=$(date +DEPLOYED-%F-%H-%M)
 git tag $TAG
 git push origin $TAG
+```
+Delete old tag:
+```console
+git tag -l
+git tag -d <tagname>
+git push --delete origin <tagname>
 ```
