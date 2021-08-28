@@ -104,11 +104,11 @@ touch ~/projects/web/django/src/boxbusiness/.env
 nano ~/projects/web/django/src/boxbusiness/.env
 ```
 ### Certificate
-Generate the free certificate:
+Generate the free certificate (here for *ivanne.de*):
 ```console
 cd ~/projects/web/django/scripts
 sudo chmod +x certdomain.sh
-sudo ./certdomain.sh dev.ivanne.de
+sudo ./certdomain.sh ivanne.de
 ```
 Automate the daily renewal (```sudo``` is important):
 ```console
@@ -116,13 +116,15 @@ sudo crontab -e
 ```
 ```bash
 DJSCRIPTS=/home/shell/projects/web/django/scripts
-0 0 * * * chmod +x $DJSCRIPTS/certdomain.sh && $DJSCRIPTS/certdomain.sh dev.ivanne.de > /var/log/certdomain.log 2>&1
+0 0 * * * chmod +x $DJSCRIPTS/certdomain.sh && $DJSCRIPTS/certdomain.sh ivanne.de > /var/log/certdomain.log 2>&1
 ```
 Check the logfile:
 ```console
 cat /var/log/certdomain.log
 ```
 ### Container-test
+For the ```functional_tests```, 2GB RAM are ***not*** enough!
+It works with 2 vCPUs and 4GB RAM.
 ```console
 cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build

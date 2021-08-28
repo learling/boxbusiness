@@ -12,4 +12,4 @@ services:
     command: sh -c "HEADLESS=1 python3 manage.py test --failfast"
     environment:
       - DEBUG=1
-      - ALLOWED_HOSTS=dev.ivanne.de,127.0.0.1,localhost
+      - ALLOWED_HOSTS=127.0.0.1,localhost

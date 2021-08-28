@@ -5,9 +5,9 @@ echo $(date)
 echo $1
 echo
 PROXYPATH=/home/shell/projects/web/django/nginx
-mkdir -vp $PROXYPATH/$1
+mkdir -vp $PROXYPATH/cert
 sudo certbot certonly -a standalone -d $1 \
  --non-interactive --agree-tos -m admin@ivanne.de
-sudo cp /etc/letsencrypt/live/$1/privkey.pem $PROXYPATH/$1/
-sudo cp /etc/letsencrypt/live/$1/fullchain.pem $PROXYPATH/$1/
-sudo chmod +r $PROXYPATH/$1/*
+sudo cp /etc/letsencrypt/live/$1/privkey.pem $PROXYPATH/cert/
+sudo cp /etc/letsencrypt/live/$1/fullchain.pem $PROXYPATH/cert/
+sudo chmod +r $PROXYPATH/cert/*
