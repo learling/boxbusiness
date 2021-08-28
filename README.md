@@ -134,7 +134,7 @@ Start with the default ports:
 ```console
 export HTTP=80
 export HTTPS=443
-export DOMAIN=box.ivanne.de
+export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack1 up -d --build
 ```
 Following is still not working:
@@ -146,7 +146,7 @@ To seamlessly update the project, temporary run ```stack2``` with different port
 git pull
 export HTTP=8080
 export HTTPS=8443
-export DOMAIN=box.ivanne.de
+export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
 #sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j \
  REDIRECT --to-ports 8080
