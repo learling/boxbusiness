@@ -75,9 +75,9 @@ See commits [Prepare deployment with docker](https://github.com/learling/boxbusi
 On the VPS, install Docker, Docker Compose, Certbot and Git:
 ```console
 sudo apt update
-sudo apt install docker docker-compose
-sudo apt install certbot
-sudo apt install git
+sudo apt install -y docker docker-compose
+sudo apt install -y certbot
+sudo apt install -y git
 ```
 ```console
 mkdir -p ~/projects/web/django
@@ -107,7 +107,7 @@ nano ~/projects/web/django/src/boxbusiness/.env
 Generate the free certificate:
 ```console
 cd ~/projects/web/django/scripts
-sudo chmod +x certdomain.sh 
+sudo chmod +x certdomain.sh
 sudo ./certdomain.sh dev.ivanne.de
 ```
 Automate the daily renewal (```sudo``` is important):
@@ -124,12 +124,12 @@ cat /var/log/certdomain.log
 ```
 ### Container-test
 ```console
+cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build
 ```
 ### Server
 Start with the default ports:
 ```console
-cd ~/projects/web/django/
 export HTTP=80
 export HTTPS=443
 sudo -E docker-compose -p stack1 up -d --build
