@@ -7,16 +7,20 @@ from django.contrib.messages import get_messages
 
 class TestViews(TestCase):
 
-    def setUp(self):
-        self.u = settings.TEST_USER
-        self.client = Client()
-
-    def tearDown(self):
+    def delete_test_user(self):
         try:
             u = User.objects.get(username=self.u['name'])
             u.delete()
         except User.DoesNotExist:
             pass
+
+    def setUp(self):
+        self.u = settings.TEST_USER
+        self.delete_test_user()
+        self.client = Client()
+
+    def tearDown(self):
+        self.delete_test_user()
 
     def register_test_user(self):
         return self.client.post(reverse('register'), {

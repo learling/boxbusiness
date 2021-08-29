@@ -129,6 +129,7 @@ Automate the daily (midnight) renewal (```sudo``` is important):
 ```console
 sudo crontab -e
 ```
+Remember to adapt the domain-name:
 ```bash
 DJSCRIPTS=/home/shell/projects/web/django/scripts
 0 0 * * * chmod +x $DJSCRIPTS/certdomain.sh && $DJSCRIPTS/certdomain.sh ivanne.de > /var/log/certdomain.log 2>&1
