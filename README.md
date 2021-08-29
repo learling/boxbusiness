@@ -9,7 +9,14 @@
 ### MySQL-Database
 Edit ```.env``` and ```settings.py``` as described in the [comments](src/boxbusiness/__init__.py)
 
-**AWS RDS SSL**
+**AWS RDS SSL**:
+-> Security Group - Inbound rules <-
+| IP version | Type         | Protocol | Port range | Source    |
+|------------|--------------|----------|------------|-----------|
+| IPv4       | MYSQL/Aurora | TCP      | 3306       | 0.0.0.0/0 |
+| IPv6       | MYSQL/Aurora | TCP      | 3306       | ::/0      |
+
+Open a separate mysql-session:
 ```console
 sudo apt install mysql-client-core-8.0
 wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
@@ -43,7 +50,7 @@ source bin/activate
 cd src
 python3 manage.py migrate
 ```
-Open a second shell to assert encryption:
+Open a second shell to verify encryption:
 ```console
 sudo tcpdump -X port 3306
 ```
@@ -51,6 +58,14 @@ In the first shell, create a superuser and you should not be able to capture any
 ```console
 python3 manage.py createsuperuser
 ```
+The app requires groups, so add them in the mysql-session:
+```sql
+INSERT INTO `auth_group` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'customer');
+```
+**DB-testing-problem**:
+Currently test-workflows cannot run in parallel because they share the same test-database.
 ### VCS with GitHub
 ```console
 git init
@@ -140,8 +155,6 @@ sudo -E docker-compose -p stack1 up -d --build
 To seamlessly update the project, temporary run ```stack2``` with different ports - before restarting ```stack1```:
 ```console
 git pull
-```
-```console
 export HTTP=8080
 export HTTPS=8443
 export DOMAIN=ivanne.de
