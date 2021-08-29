@@ -124,7 +124,7 @@ cat /var/log/certdomain.log
 ```
 ### Container-test
 For the ```functional_tests```, 2GB RAM are ***not*** enough!
-It works with 2 vCPUs and 4GB RAM (check it with ```htop``` in a parallel SSH-session).
+They work with 2 vCPUs and 4GB RAM (check it with ```htop``` in a parallel SSH-session).
 ```console
 cd ~/projects/web/django/
 sudo docker-compose -f docker-compose-test.yml up --build
@@ -147,6 +147,7 @@ export HTTPS=8443
 export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack2 up -d --build
 ```
+Refer to the [firewall-settings](scripts/iptables-export) and add these rules:
 ```console
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp \
  --dport 443 -j REDIRECT --to-port 8443
