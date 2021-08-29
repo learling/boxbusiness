@@ -153,7 +153,7 @@ export HTTPS=443
 export DOMAIN=ivanne.de
 sudo -E docker-compose -p stack1 up -d --build
 ```
-To seamlessly update the project, temporary run ```stack2``` with different ports - before restarting ```stack1```:
+To seamlessly update the project, temporarily run ```stack2``` with different ports - before killing ```stack1```:
 ```console
 git pull
 export HTTP=8080
